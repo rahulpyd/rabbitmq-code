@@ -5,7 +5,7 @@ import pika
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 channel = connection.channel()
 
-channel.queue_declare(queue='task_queue')
+channel.queue_declare(queue='task_queue1', durable=True)
 
 def callback(ch, method, properties, body):
     print(" [x] Received %r" % (body,))
@@ -14,7 +14,7 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
 channel.basic_consume(callback,
-                      queue='task_queue')
+                      queue='task_queue1')
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
